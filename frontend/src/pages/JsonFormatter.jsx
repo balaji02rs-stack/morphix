@@ -2,67 +2,70 @@ import { useState } from "react";
 import api from "../services/api";
 import "../styles/ToolPage.css";
 
-function Base64Tool() {
+function JsonFormatter() {
   const [input, setInput] = useState("");
-  const [result, setResult] = useState("");
+  const [output, setOutput] = useState("");
 
-  const encodeText = async () => {
+  const formatJson = async () => {
     if (!input.trim()) {
-      alert("Please enter some text.");
+      alert("Please enter JSON.");
       return;
     }
 
     try {
-      const response = await api.get("/dev/base64/encode", {
-        params: {
-          text: input,
+      const response = await api.post("/dev/json/format", input, {
+        headers: {
+          "Content-Type": "text/plain",
         },
       });
 
-      setResult(response.data);
+      setOutput(
+  typeof response.data === "string"
+    ? response.data
+    : JSON.stringify(response.data, null, 2)
+);
     } catch (error) {
-      console.error(error);
-      alert("Backend is not running.");
+      setOutput("Invalid JSON");
     }
   };
 
-  const decodeText = async () => {
+  const validateJson = async () => {
     if (!input.trim()) {
-      alert("Please enter Base64 text.");
+      alert("Please enter JSON.");
       return;
     }
 
     try {
-      const response = await api.get("/dev/base64/decode", {
-        params: {
-          text: input,
+      const response = await api.post("/dev/json/validate", input, {
+        headers: {
+          "Content-Type": "text/plain",
         },
       });
 
-      setResult(response.data);
+      setOutput(response.data);
     } catch (error) {
-      console.error(error);
-      alert("Backend is not running.");
+      setOutput("Invalid JSON");
     }
   };
 
   const copyResult = async () => {
-    if (!result) return;
+    if (!output) return;
 
-    await navigator.clipboard.writeText(result);
-    alert("Result copied!");
+    await navigator.clipboard.writeText(output);
+    alert("Copied!");
   };
 
   return (
     <div className="tool-container">
       <div className="tool-card">
-        <h1>🔄 Base64 Encoder / Decoder</h1>
 
-        <p>Encode or decode Base64 text instantly.</p>
+        <h1>📄 JSON Formatter & Validator</h1>
+
+        <p>Format and validate JSON instantly.</p>
 
         <textarea
           className="tool-output"
-          placeholder="Enter text..."
+          placeholder='{"name":"John"}'
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
@@ -76,25 +79,25 @@ function Base64Tool() {
         >
           <button
             className="tool-button"
-            onClick={encodeText}
+            onClick={formatJson}
           >
-            Encode
+            Format JSON
           </button>
 
           <button
             className="tool-button"
-            onClick={decodeText}
+            onClick={validateJson}
           >
-            Decode
+            Validate JSON
           </button>
         </div>
 
-        {result && (
+        {output && (
           <>
             <textarea
               className="tool-output"
               readOnly
-              value={result}
+              value={output}
             />
 
             <button
@@ -105,9 +108,10 @@ function Base64Tool() {
             </button>
           </>
         )}
+
       </div>
     </div>
   );
 }
 
-export default Base64Tool;
+export default JsonFormatter;
