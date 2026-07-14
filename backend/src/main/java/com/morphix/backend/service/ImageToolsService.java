@@ -32,10 +32,6 @@ public class ImageToolsService {
 
         BufferedImage image = ImageIO.read(file.getInputStream());
 
-        if (image == null) {
-            throw new RuntimeException("Invalid PNG Image");
-        }
-
         BufferedImage rgbImage = new BufferedImage(
                 image.getWidth(),
                 image.getHeight(),
@@ -43,17 +39,39 @@ public class ImageToolsService {
         );
 
         Graphics2D graphics = rgbImage.createGraphics();
-
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-
         graphics.drawImage(image, 0, 0, null);
-
         graphics.dispose();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         ImageIO.write(rgbImage, "jpg", outputStream);
+
+        return outputStream.toByteArray();
+    }
+
+    public byte[] resizeImage(MultipartFile file, int width, int height) throws Exception {
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        Thumbnails.of(file.getInputStream())
+                .size(width, height)
+                .outputFormat("png")
+                .toOutputStream(outputStream);
+
+        return outputStream.toByteArray();
+    }
+
+    public byte[] compressImage(MultipartFile file, float quality) throws Exception {
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        Thumbnails.of(file.getInputStream())
+                .scale(1.0)
+                .outputQuality(quality)
+                .outputFormat("jpg")
+                .toOutputStream(outputStream);
 
         return outputStream.toByteArray();
     }

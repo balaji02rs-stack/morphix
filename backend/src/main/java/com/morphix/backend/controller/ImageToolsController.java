@@ -31,27 +31,54 @@ public class ImageToolsController {
         byte[] image = service.jpgToPng(file);
 
         return ResponseEntity.ok()
-                .header(
-                        HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"converted.png\""
-                )
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"converted.png\"")
                 .contentType(MediaType.IMAGE_PNG)
                 .body(image);
     }
 
     @PostMapping("/png-to-jpg")
-public ResponseEntity<byte[]> pngToJpg(
-        @RequestParam("file") MultipartFile file
-) throws Exception {
+    public ResponseEntity<byte[]> pngToJpg(
+            @RequestParam("file") MultipartFile file
+    ) throws Exception {
 
-    byte[] image = service.pngToJpg(file);
+        byte[] image = service.pngToJpg(file);
 
-    return ResponseEntity.ok()
-            .header(
-                    HttpHeaders.CONTENT_DISPOSITION,
-                    "attachment; filename=\"converted.jpg\""
-            )
-            .contentType(MediaType.IMAGE_JPEG)
-            .body(image);
-}
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"converted.jpg\"")
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(image);
+    }
+
+    @PostMapping("/resize")
+    public ResponseEntity<byte[]> resizeImage(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam int width,
+            @RequestParam int height
+    ) throws Exception {
+
+        byte[] image = service.resizeImage(file, width, height);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"resized.png\"")
+                .contentType(MediaType.IMAGE_PNG)
+                .body(image);
+    }
+
+    @PostMapping("/compress")
+    public ResponseEntity<byte[]> compressImage(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam float quality
+    ) throws Exception {
+
+        byte[] image = service.compressImage(file, quality);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"compressed.jpg\"")
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(image);
+    }
 }
