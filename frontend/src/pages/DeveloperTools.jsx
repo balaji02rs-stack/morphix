@@ -84,6 +84,16 @@ function DeveloperTools() {
     JSON Formatter & Validator
   </button>
 </Link>
+<Link to="/image-tools/jpg-to-png">
+  <button className="tool-button">
+    JPG → PNG Converter
+  </button>
+</Link>
+<Link to="/image-tools/png-to-jpg">
+    <button className="tool-button">
+        PNG → JPG Converter
+    </button>
+</Link>
         </Link>
       </div>
     </div>

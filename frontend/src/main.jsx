@@ -12,6 +12,8 @@ import UUIDGenerator from "./pages/UUIDGenerator";
 import PasswordGenerator from "./pages/PasswordGenerator";
 import SHA256Generator from "./pages/SHA256Generator";
 import Base64Tool from "./pages/Base64Tool";
+import JpgToPng from "./pages/JpgToPng";
+import PngToJpg from "./pages/PngToJpg";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -23,6 +25,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="/developer-tools/password" element={<PasswordGenerator />} />
       <Route path="/developer-tools/sha256" element={<SHA256Generator />} />
       <Route path="/developer-tools/base64" element={<Base64Tool />} />
+      <Route
+    path="/image-tools/png-to-jpg"
+    element={<PngToJpg />}
+/>
+      <Route
+  path="/image-tools/jpg-to-png"
+  element={<JpgToPng />}
+/>
       <Route
   path="/developer-tools/json"
   element={<JsonFormatter />}

@@ -32,6 +32,10 @@ public class ImageToolsService {
 
         BufferedImage image = ImageIO.read(file.getInputStream());
 
+        if (image == null) {
+            throw new RuntimeException("Invalid image.");
+        }
+
         BufferedImage rgbImage = new BufferedImage(
                 image.getWidth(),
                 image.getHeight(),
@@ -76,4 +80,39 @@ public class ImageToolsService {
         return outputStream.toByteArray();
     }
 
+    public byte[] cropImage(
+            MultipartFile file,
+            int x,
+            int y,
+            int width,
+            int height
+    ) throws Exception {
+
+        BufferedImage image = ImageIO.read(file.getInputStream());
+
+        if (image == null) {
+            throw new RuntimeException("Invalid image.");
+        }
+
+        if (x < 0 || y < 0 || width <= 0 || height <= 0) {
+            throw new RuntimeException("Crop values must be positive.");
+        }
+
+        if (x + width > image.getWidth() ||
+            y + height > image.getHeight()) {
+
+            throw new RuntimeException(
+                    "Crop area exceeds image size. Image Size: "
+                            + image.getWidth() + "x" + image.getHeight()
+            );
+        }
+
+        BufferedImage cropped = image.getSubimage(x, y, width, height);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        ImageIO.write(cropped, "png", outputStream);
+
+        return outputStream.toByteArray();
+    }
 }

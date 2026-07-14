@@ -81,4 +81,34 @@ public class ImageToolsController {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(image);
     }
+
+    @PostMapping("/crop")
+public ResponseEntity<?> cropImage(
+        @RequestParam("file") MultipartFile file,
+        @RequestParam int x,
+        @RequestParam int y,
+        @RequestParam int width,
+        @RequestParam int height
+) {
+
+    try {
+
+        byte[] image = service.cropImage(file, x, y, width, height);
+
+        return ResponseEntity.ok()
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"cropped.png\""
+                )
+                .contentType(MediaType.IMAGE_PNG)
+                .body(image);
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
+
+        return ResponseEntity.internalServerError()
+                .body(e.toString());
+    }
+}
 }
