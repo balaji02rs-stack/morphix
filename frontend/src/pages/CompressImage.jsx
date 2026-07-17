@@ -2,24 +2,26 @@ import { useState } from "react";
 import api from "../services/api";
 import "../styles/ToolPage.css";
 
-function JpgToPng() {
+function CompressImage() {
   const [file, setFile] = useState(null);
+  const [quality, setQuality] = useState(80);
   const [loading, setLoading] = useState(false);
 
-  const convertImage = async () => {
+  const compressImage = async () => {
     if (!file) {
-      alert("Please select a JPG image.");
+      alert("Please select an image.");
       return;
     }
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("quality", quality / 100);
 
     try {
       setLoading(true);
 
       const response = await api.post(
-        "/image/jpg-to-png",
+        "/image/compress",
         formData,
         {
           responseType: "blob",
@@ -30,16 +32,17 @@ function JpgToPng() {
 
       const link = document.createElement("a");
       link.href = url;
-      link.download = "converted.png";
+      link.download = "compressed.jpg";
 
       document.body.appendChild(link);
       link.click();
       link.remove();
 
       window.URL.revokeObjectURL(url);
+
     } catch (error) {
       console.error(error);
-      alert("Conversion failed.");
+      alert("Compression failed.");
     } finally {
       setLoading(false);
     }
@@ -49,26 +52,41 @@ function JpgToPng() {
     <div className="tool-container">
       <div className="tool-card">
 
-        <h1>JPG → PNG Converter</h1>
+        <h1>Compress Image</h1>
 
-        <p>
-          Convert JPG images into PNG format instantly.
-        </p>
+        <p>Reduce image size while maintaining quality.</p>
 
         <input
           type="file"
-          accept=".jpg,.jpeg,image/jpeg"
+          accept="image/*"
           onChange={(e) => setFile(e.target.files[0])}
+        />
+
+        <br /><br />
+
+        <label>
+          Quality: <strong>{quality}%</strong>
+        </label>
+
+        <br />
+
+        <input
+          type="range"
+          min="10"
+          max="100"
+          value={quality}
+          onChange={(e) => setQuality(e.target.value)}
+          style={{ width: "100%" }}
         />
 
         <br /><br />
 
         <button
           className="tool-button"
-          onClick={convertImage}
+          onClick={compressImage}
           disabled={loading}
         >
-          {loading ? "Converting..." : "Convert Image"}
+          {loading ? "Compressing..." : "Compress Image"}
         </button>
 
       </div>
@@ -76,4 +94,4 @@ function JpgToPng() {
   );
 }
 
-export default JpgToPng;
+export default CompressImage;

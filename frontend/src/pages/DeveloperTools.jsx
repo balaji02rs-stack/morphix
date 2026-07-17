@@ -1,100 +1,49 @@
 import { Link } from "react-router-dom";
+import "../styles/DeveloperTools.css";
 
 function DeveloperTools() {
+  const tools = [
+    {
+      title: "UUID Generator",
+      description: "Generate universally unique identifiers.",
+      link: "/developer-tools/uuid",
+    },
+    {
+      title: "Password Generator",
+      description: "Generate strong and secure passwords.",
+      link: "/developer-tools/password",
+    },
+    {
+      title: "SHA-256 Generator",
+      description: "Generate SHA-256 hashes instantly.",
+      link: "/developer-tools/sha256",
+    },
+    {
+      title: "Base64 Encoder / Decoder",
+      description: "Encode and decode Base64 text.",
+      link: "/developer-tools/base64",
+    },
+    {
+      title: "JSON Formatter",
+      description: "Format and validate JSON data.",
+      link: "/developer-tools/json",
+    },
+  ];
+
   return (
-    <div
-      style={{
-        background: "#0f172a",
-        color: "white",
-        minHeight: "100vh",
-        padding: "40px",
-      }}
-    >
+    <div className="developer-page">
       <h1>Developer Tools</h1>
+      <p className="subtitle">
+        Fast, free and easy-to-use developer utilities.
+      </p>
 
-      <p>Select a tool below.</p>
-
-      <div
-        style={{
-          marginTop: "30px",
-          display: "grid",
-          gap: "20px",
-          maxWidth: "500px",
-        }}
-      >
-        <Link to="/developer-tools/uuid">
-          <button
-            style={{
-              width: "100%",
-              padding: "15px",
-              fontSize: "16px",
-              cursor: "pointer",
-            }}
-          >
-            UUID Generator
-          </button>
-        </Link>
-
-        <Link to="/developer-tools/password">
-          <button
-            style={{
-              width: "100%",
-              padding: "15px",
-              fontSize: "16px",
-              cursor: "pointer",
-            }}
-          >
-            Password Generator
-          </button>
-        </Link>
-
-        <Link to="/developer-tools/sha256">
-          <button
-            style={{
-              width: "100%",
-              padding: "15px",
-              fontSize: "16px",
-              cursor: "pointer",
-            }}
-          >
-            SHA-256 Generator
-          </button>
-        </Link>
-
-        <Link to="/developer-tools/base64">
-          <button
-            style={{
-              width: "100%",
-              padding: "15px",
-              fontSize: "16px",
-              cursor: "pointer",
-            }}
-          >
-            Base64 Tool
-          </button>
-          <Link to="/developer-tools/json">
-  <button
-    style={{
-      width: "100%",
-      padding: "15px",
-      fontSize: "16px",
-      cursor: "pointer",
-    }}
-  >
-    JSON Formatter & Validator
-  </button>
-</Link>
-<Link to="/image-tools/jpg-to-png">
-  <button className="tool-button">
-    JPG → PNG Converter
-  </button>
-</Link>
-<Link to="/image-tools/png-to-jpg">
-    <button className="tool-button">
-        PNG → JPG Converter
-    </button>
-</Link>
-        </Link>
+      <div className="tool-grid">
+        {tools.map((tool, index) => (
+          <Link to={tool.link} key={index} className="tool-card">
+            <h2>{tool.title}</h2>
+            <p>{tool.description}</p>
+          </Link>
+        ))}
       </div>
     </div>
   );

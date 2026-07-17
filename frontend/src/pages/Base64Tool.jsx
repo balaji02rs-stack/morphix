@@ -3,46 +3,42 @@ import api from "../services/api";
 import "../styles/ToolPage.css";
 
 function Base64Tool() {
-  const [input, setInput] = useState("");
+  const [text, setText] = useState("");
   const [result, setResult] = useState("");
 
-  const encodeText = async () => {
-    if (!input.trim()) {
-      alert("Please enter some text.");
+  const encode = async () => {
+    if (!text.trim()) {
+      alert("Please enter text.");
       return;
     }
 
     try {
       const response = await api.get("/dev/base64/encode", {
-        params: {
-          text: input,
-        },
+        params: { text },
       });
 
       setResult(response.data);
     } catch (error) {
       console.error(error);
-      alert("Backend is not running.");
+      alert("Encoding failed.");
     }
   };
 
-  const decodeText = async () => {
-    if (!input.trim()) {
+  const decode = async () => {
+    if (!text.trim()) {
       alert("Please enter Base64 text.");
       return;
     }
 
     try {
       const response = await api.get("/dev/base64/decode", {
-        params: {
-          text: input,
-        },
+        params: { text },
       });
 
       setResult(response.data);
     } catch (error) {
       console.error(error);
-      alert("Backend is not running.");
+      alert("Decoding failed.");
     }
   };
 
@@ -50,44 +46,37 @@ function Base64Tool() {
     if (!result) return;
 
     await navigator.clipboard.writeText(result);
-    alert("Result copied!");
+    alert("Copied successfully!");
   };
 
   return (
     <div className="tool-container">
       <div className="tool-card">
-        <h1>🔄 Base64 Encoder / Decoder</h1>
 
-        <p>Encode or decode Base64 text instantly.</p>
+        <h1>Base64 Encoder / Decoder</h1>
+
+        <p>
+          Encode plain text to Base64 or decode Base64 back to plain text.
+        </p>
 
         <textarea
           className="tool-output"
           placeholder="Enter text..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
         />
 
-        <div
-          style={{
-            display: "flex",
-            gap: "15px",
-            marginTop: "20px",
-          }}
-        >
-          <button
-            className="tool-button"
-            onClick={encodeText}
-          >
-            Encode
-          </button>
+        <br /><br />
 
-          <button
-            className="tool-button"
-            onClick={decodeText}
-          >
-            Decode
-          </button>
-        </div>
+        <button className="tool-button" onClick={encode}>
+          Encode
+        </button>
+
+        {" "}
+
+        <button className="tool-button" onClick={decode}>
+          Decode
+        </button>
 
         {result && (
           <>
@@ -105,6 +94,7 @@ function Base64Tool() {
             </button>
           </>
         )}
+
       </div>
     </div>
   );

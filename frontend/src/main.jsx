@@ -1,42 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import JsonFormatter from "./pages/JsonFormatter";
-
-import "./styles/Global.css";
+import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
-
-import DeveloperTools from "./pages/DeveloperTools";
-import UUIDGenerator from "./pages/UUIDGenerator";
-import PasswordGenerator from "./pages/PasswordGenerator";
-import SHA256Generator from "./pages/SHA256Generator";
-import Base64Tool from "./pages/Base64Tool";
-import JpgToPng from "./pages/JpgToPng";
-import PngToJpg from "./pages/PngToJpg";
+import "./styles/Global.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />} />
-
-      <Route path="/developer-tools" element={<DeveloperTools />} />
-      <Route path="/developer-tools/uuid" element={<UUIDGenerator />} />
-      <Route path="/developer-tools/password" element={<PasswordGenerator />} />
-      <Route path="/developer-tools/sha256" element={<SHA256Generator />} />
-      <Route path="/developer-tools/base64" element={<Base64Tool />} />
-      <Route
-    path="/image-tools/png-to-jpg"
-    element={<PngToJpg />}
-/>
-      <Route
-  path="/image-tools/jpg-to-png"
-  element={<JpgToPng />}
-/>
-      <Route
-  path="/developer-tools/json"
-  element={<JsonFormatter />}
-/>
-    </Routes>
-  </BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
 );

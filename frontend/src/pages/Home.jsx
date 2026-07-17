@@ -1,59 +1,49 @@
-import SearchBar from "../components/SearchBar";
-import ToolCard from "../components/ToolCard";
+import { Link } from "react-router-dom";
+import "../styles/Home.css";
 
 function Home() {
   return (
-    <div
-      style={{
-        background: "#0f172a",
-        minHeight: "100vh",
-        padding: "40px",
-      }}
-    >
-      <SearchBar />
+    <div className="home">
+      <section className="hero">
+        <h1>Morphix</h1>
 
-      <h2
-        style={{
-          color: "white",
-          textAlign: "center",
-          marginBottom: "30px",
-        }}
-      >
-        Categories
-      </h2>
+        <p>
+          Your all-in-one online toolkit for developers, image processing,
+          and document utilities.
+        </p>
+      </section>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          flexWrap: "wrap",
-          gap: "20px",
-        }}
-      >
-        <ToolCard
-          title="Developer Tools"
-          description="UUID, Password, SHA-256, Base64 and more."
-          link="/developer-tools"
-        />
+      <section className="categories">
+        <Link to="/developer-tools" className="category-card">
+          <h2>🛠 Developer Tools</h2>
 
-        <ToolCard
-          title="Image Tools"
-          description="PNG, JPG, Resize, Compress."
-          link="/image-tools"
-        />
+          <p>
+            UUID Generator, Password Generator, SHA-256,
+            Base64 Encoder/Decoder, JSON Formatter.
+          </p>
+        </Link>
 
-        <ToolCard
-          title="Document Tools"
-          description="PDF to Text, Image to PDF."
-          link="/document-tools"
-        />
+        <Link to="/image-tools" className="category-card">
+          <h2>🖼 Image Tools</h2>
 
-        <ToolCard
-          title="Web Tools"
-          description="URL Encode/Decode, HTML Escape."
-          link="/web-tools"
-        />
-      </div>
+          <p>
+            JPG → PNG, PNG → JPG, Resize Image,
+            Compress Image, Crop Image, Rotate Image.
+          </p>
+        </Link>
+
+        <div className="category-card disabled">
+          <h2>📄 Document Tools</h2>
+
+          <p>
+            Merge PDF, Split PDF,
+            Protect PDF, Unlock PDF,
+            Extract PDF Text.
+          </p>
+
+          <span>Coming Soon</span>
+        </div>
+      </section>
     </div>
   );
 }

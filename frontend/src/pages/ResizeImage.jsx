@@ -2,24 +2,33 @@ import { useState } from "react";
 import api from "../services/api";
 import "../styles/ToolPage.css";
 
-function JpgToPng() {
+function ResizeImage() {
   const [file, setFile] = useState(null);
+  const [width, setWidth] = useState("");
+  const [height, setHeight] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const convertImage = async () => {
+  const resizeImage = async () => {
     if (!file) {
-      alert("Please select a JPG image.");
+      alert("Please select an image.");
+      return;
+    }
+
+    if (!width || !height) {
+      alert("Please enter width and height.");
       return;
     }
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("width", width);
+    formData.append("height", height);
 
     try {
       setLoading(true);
 
       const response = await api.post(
-        "/image/jpg-to-png",
+        "/image/resize",
         formData,
         {
           responseType: "blob",
@@ -30,16 +39,17 @@ function JpgToPng() {
 
       const link = document.createElement("a");
       link.href = url;
-      link.download = "converted.png";
+      link.download = "resized.png";
 
       document.body.appendChild(link);
       link.click();
       link.remove();
 
       window.URL.revokeObjectURL(url);
+
     } catch (error) {
       console.error(error);
-      alert("Conversion failed.");
+      alert("Resize failed.");
     } finally {
       setLoading(false);
     }
@@ -49,26 +59,42 @@ function JpgToPng() {
     <div className="tool-container">
       <div className="tool-card">
 
-        <h1>JPG → PNG Converter</h1>
+        <h1>Resize Image</h1>
 
-        <p>
-          Convert JPG images into PNG format instantly.
-        </p>
+        <p>Resize JPG or PNG images to custom dimensions.</p>
 
         <input
           type="file"
-          accept=".jpg,.jpeg,image/jpeg"
+          accept="image/*"
           onChange={(e) => setFile(e.target.files[0])}
+        />
+
+        <br /><br />
+
+        <input
+          type="number"
+          placeholder="Width"
+          value={width}
+          onChange={(e) => setWidth(e.target.value)}
+          style={{ width: "120px", marginRight: "10px" }}
+        />
+
+        <input
+          type="number"
+          placeholder="Height"
+          value={height}
+          onChange={(e) => setHeight(e.target.value)}
+          style={{ width: "120px" }}
         />
 
         <br /><br />
 
         <button
           className="tool-button"
-          onClick={convertImage}
+          onClick={resizeImage}
           disabled={loading}
         >
-          {loading ? "Converting..." : "Convert Image"}
+          {loading ? "Resizing..." : "Resize Image"}
         </button>
 
       </div>
@@ -76,4 +102,4 @@ function JpgToPng() {
   );
 }
 
-export default JpgToPng;
+export default ResizeImage;

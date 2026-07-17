@@ -8,7 +8,7 @@ function SHA256Generator() {
 
   const generateHash = async () => {
     if (!text.trim()) {
-      alert("Please enter some text.");
+      alert("Please enter text.");
       return;
     }
 
@@ -22,7 +22,7 @@ function SHA256Generator() {
       setHash(response.data);
     } catch (error) {
       console.error(error);
-      alert("Backend is not running.");
+      alert("Failed to generate SHA-256 hash.");
     }
   };
 
@@ -36,9 +36,10 @@ function SHA256Generator() {
   return (
     <div className="tool-container">
       <div className="tool-card">
-        <h1>🔒 SHA-256 Generator</h1>
 
-        <p>Generate a SHA-256 hash from any text.</p>
+        <h1>SHA-256 Generator</h1>
+
+        <p>Generate SHA-256 hashes for any text.</p>
 
         <textarea
           className="tool-output"
@@ -47,9 +48,10 @@ function SHA256Generator() {
           onChange={(e) => setText(e.target.value)}
         />
 
+        <br /><br />
+
         <button
           className="tool-button"
-          style={{ marginTop: "20px" }}
           onClick={generateHash}
         >
           Generate Hash
@@ -71,6 +73,7 @@ function SHA256Generator() {
             </button>
           </>
         )}
+
       </div>
     </div>
   );

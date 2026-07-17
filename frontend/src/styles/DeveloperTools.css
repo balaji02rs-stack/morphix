@@ -1,0 +1,46 @@
+.developer-page {
+  padding: 60px;
+}
+
+.developer-page h1 {
+  text-align: center;
+  font-size: 42px;
+  color: #38bdf8;
+}
+
+.subtitle {
+  text-align: center;
+  color: #cbd5e1;
+  margin: 15px 0 50px;
+  font-size: 18px;
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.tool-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 25px;
+  color: white;
+  transition: 0.3s;
+}
+
+.tool-card:hover {
+  transform: translateY(-6px);
+  border-color: #38bdf8;
+}
+
+.tool-card h2 {
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.tool-card p {
+  color: #cbd5e1;
+  line-height: 1.6;
+}
