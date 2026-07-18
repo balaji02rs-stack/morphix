@@ -1,97 +1,332 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import api from "../services/api";
-import "../styles/ToolPage.css";
+
+import ImageToolLayout from "../layouts/ImageToolLayout";
+import ImageUpload from "../components/image/ImageUpload";
+import ImageInfo from "../components/image/ImageInfo";
+import ImageActions from "../components/image/ImageActions";
 
 function CompressImage() {
-  const [file, setFile] = useState(null);
-  const [quality, setQuality] = useState(80);
-  const [loading, setLoading] = useState(false);
 
-  const compressImage = async () => {
-    if (!file) {
-      alert("Please select an image.");
-      return;
-    }
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null);
+    const [downloadBlob, setDownloadBlob] = useState(null);
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("quality", quality / 100);
+    const [processing, setProcessing] = useState(false);
 
-    try {
-      setLoading(true);
+    const [quality, setQuality] = useState(80);
 
-      const response = await api.post(
-        "/image/compress",
-        formData,
-        {
-          responseType: "blob",
+    const [imageInfo, setImageInfo] = useState({
+        name: "",
+        type: "",
+        size: 0,
+        width: 0,
+        height: 0
+    });
+
+    useEffect(() => {
+
+        if (!selectedFile) {
+
+            setImageUrl(null);
+            setPreviewUrl(null);
+            setDownloadBlob(null);
+
+            return;
+
         }
-      );
 
-      const url = window.URL.createObjectURL(response.data);
+        const url = URL.createObjectURL(selectedFile);
 
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "compressed.jpg";
+        setImageUrl(url);
 
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+        const img = new Image();
 
-      window.URL.revokeObjectURL(url);
+        img.onload = () => {
 
-    } catch (error) {
-      console.error(error);
-      alert("Compression failed.");
-    } finally {
-      setLoading(false);
-    }
-  };
+            setImageInfo({
 
-  return (
-    <div className="tool-container">
-      <div className="tool-card">
+                name: selectedFile.name,
+                type: selectedFile.type,
+                size: selectedFile.size,
+                width: img.width,
+                height: img.height
 
-        <h1>Compress Image</h1>
+            });
 
-        <p>Reduce image size while maintaining quality.</p>
+        };
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
-        />
+        img.src = url;
 
-        <br /><br />
+        return () => URL.revokeObjectURL(url);
 
-        <label>
-          Quality: <strong>{quality}%</strong>
-        </label>
+    }, [selectedFile]);
+        const handleCompress = async () => {
 
-        <br />
+        if (!selectedFile)
+            return;
 
-        <input
-          type="range"
-          min="10"
-          max="100"
-          value={quality}
-          onChange={(e) => setQuality(e.target.value)}
-          style={{ width: "100%" }}
-        />
+        try {
 
-        <br /><br />
+            setProcessing(true);
 
-        <button
-          className="tool-button"
-          onClick={compressImage}
-          disabled={loading}
-        >
-          {loading ? "Compressing..." : "Compress Image"}
-        </button>
+            const formData = new FormData();
 
-      </div>
-    </div>
-  );
+            formData.append("file", selectedFile);
+            formData.append("quality", quality / 100);
+
+            const response = await api.post(
+
+                "/image/compress",
+
+                formData,
+
+                {
+                    responseType: "blob"
+                }
+
+            );
+
+            const blob = new Blob([response.data], {
+
+                type: "image/jpeg"
+
+            });
+
+            setDownloadBlob(blob);
+
+            if (previewUrl) {
+
+                URL.revokeObjectURL(previewUrl);
+
+            }
+
+            const url = URL.createObjectURL(blob);
+
+            setPreviewUrl(url);
+
+        } catch (err) {
+
+            console.error(err);
+
+            alert("Compression failed.");
+
+        } finally {
+
+            setProcessing(false);
+
+        }
+
+    };
+
+    const handleDownload = () => {
+
+        if (!downloadBlob)
+            return;
+
+        const url = URL.createObjectURL(downloadBlob);
+
+        const a = document.createElement("a");
+
+        a.href = url;
+
+        a.download = "compressed-image.jpg";
+
+        document.body.appendChild(a);
+
+        a.click();
+
+        a.remove();
+
+        URL.revokeObjectURL(url);
+
+    };
+
+    const handleReset = () => {
+
+        if (previewUrl) {
+
+            URL.revokeObjectURL(previewUrl);
+
+        }
+
+        setPreviewUrl(null);
+
+        setDownloadBlob(null);
+
+        setQuality(80);
+
+    };
+
+    return (
+
+        <>
+
+            <ImageToolLayout
+
+                title="Compress Image"
+
+                description="Reduce image size while maintaining good quality."
+
+                upload={
+
+                    <ImageUpload
+
+                        file={selectedFile}
+
+                        onFileSelect={setSelectedFile}
+
+                    />
+
+                }
+
+                workspace={
+
+                    <div style={{ textAlign: "center" }}>
+
+                        {imageUrl && (
+
+                            <img
+
+                                src={imageUrl}
+
+                                alt="Original"
+
+                                style={{
+
+                                    maxWidth: "100%",
+                                    borderRadius: 10
+
+                                }}
+
+                            />
+
+                        )}
+
+                    </div>
+
+                }
+
+                info={
+
+                    <ImageInfo
+
+                        fileName={imageInfo.name}
+                        fileType={imageInfo.type}
+                        fileSize={imageInfo.size}
+                        width={imageInfo.width}
+                        height={imageInfo.height}
+
+                    />
+
+                }
+
+                controls={
+
+                    <div className="resize-controls">
+
+                        <label>
+
+                            Quality: {quality}%
+
+                        </label>
+
+                        <input
+
+                            type="range"
+
+                            min="10"
+
+                            max="100"
+
+                            value={quality}
+
+                            onChange={(e) =>
+                                setQuality(Number(e.target.value))
+                            }
+
+                        />
+
+                    </div>
+
+                }
+
+                actions={                    <ImageActions
+
+                        primaryLabel={
+                            processing
+                                ? "Compressing..."
+                                : "Compress"
+                        }
+
+                        onPrimary={handleCompress}
+
+                        onReset={handleReset}
+
+                        onDownload={handleDownload}
+
+                        disablePrimary={
+                            processing ||
+                            !selectedFile
+                        }
+
+                        disableDownload={
+                            !downloadBlob
+                        }
+
+                    />
+
+                }
+
+            />
+
+            {previewUrl && (
+
+                <div
+
+                    style={{
+
+                        maxWidth: 900,
+                        margin: "30px auto",
+                        background: "#111827",
+                        padding: 20,
+                        borderRadius: 12
+
+                    }}
+
+                >
+
+                    <h2 style={{ marginBottom: 20 }}>
+
+                        Compressed Preview
+
+                    </h2>
+
+                    <img
+
+                        src={previewUrl}
+
+                        alt="Compressed"
+
+                        style={{
+
+                            width: "100%",
+                            borderRadius: 10
+
+                        }}
+
+                    />
+
+                </div>
+
+            )}
+
+        </>
+
+    );
+
 }
 
 export default CompressImage;

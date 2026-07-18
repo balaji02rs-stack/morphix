@@ -1,46 +1,217 @@
-.developer-page {
-  padding: 60px;
+/* ---------- Home Page ---------- */
+
+.home-page {
+    min-height: calc(100vh - 70px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px 60px;
 }
 
-.developer-page h1 {
-  text-align: center;
-  font-size: 42px;
-  color: #38bdf8;
+/* ---------- Hero ---------- */
+
+.hero {
+    text-align: center;
+    margin-bottom: 70px;
+    animation: fadeUp 1s ease;
 }
 
-.subtitle {
-  text-align: center;
-  color: #cbd5e1;
-  margin: 15px 0 50px;
-  font-size: 18px;
+.hero-small {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+    color: #6b7cff;
+    animation: slideDown 1s ease;
 }
+
+.hero-title {
+    font-size: 7rem;
+    font-weight: 900;
+    margin: 0;
+    line-height: 1;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: zoomIn 1s ease;
+}
+
+.hero-line {
+    width: 220px;
+    height: 4px;
+    margin: 25px auto;
+    border-radius: 10px;
+    background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: #cbd5e1;
+    max-width: 800px;
+    margin: auto;
+}
+
+/* ---------- Cards ---------- */
 
 .tool-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .tool-card {
-  background: #1e293b;
-  border: 1px solid #334155;
-  border-radius: 14px;
-  padding: 25px;
-  color: white;
-  transition: 0.3s;
+    width: 340px;
+    background: rgba(31, 41, 55, .95);
+    border: 1px solid rgba(96, 165, 250, .15);
+    border-radius: 22px;
+    padding: 40px 30px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    transition: all .35s ease;
+    box-shadow: 0 12px 35px rgba(0,0,0,.25);
 }
 
 .tool-card:hover {
-  transform: translateY(-6px);
-  border-color: #38bdf8;
+    transform: translateY(-12px) scale(1.02);
+    border-color: #3b82f6;
+    box-shadow: 0 20px 40px rgba(59,130,246,.25);
 }
 
+/* ---------- Icon ---------- */
+
+.tool-icon {
+    width: 95px;
+    height: 95px;
+    margin: auto;
+    margin-bottom: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: rgba(37,99,235,.15);
+
+    color: #3b82f6;
+    font-size: 45px;
+
+    transition: .35s;
+}
+
+.tool-card:hover .tool-icon {
+    transform: rotate(-8deg) scale(1.12);
+    background: rgba(59,130,246,.25);
+}
+
+/* ---------- Text ---------- */
+
 .tool-card h2 {
-  margin-bottom: 12px;
-  color: #ffffff;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.card-line {
+    width: 45px;
+    height: 4px;
+    background: #3b82f6;
+    margin: auto;
+    border-radius: 30px;
+    margin-bottom: 20px;
 }
 
 .tool-card p {
-  color: #cbd5e1;
-  line-height: 1.6;
+    color: #cbd5e1;
+    line-height: 1.8;
+    min-height: 100px;
+}
+
+/* ---------- Button ---------- */
+
+.explore-btn {
+    margin-top: 25px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    border: 2px solid #2563eb;
+    border-radius: 12px;
+
+    padding: 12px 22px;
+
+    color: #3b82f6;
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.tool-card:hover .explore-btn {
+    background: #2563eb;
+    color: white;
+}
+
+/* ---------- Animations ---------- */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes slideDown {
+
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes zoomIn {
+
+    from {
+        opacity: 0;
+        transform: scale(.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+/* ---------- Responsive ---------- */
+
+@media(max-width:900px){
+
+.hero-title{
+    font-size:4.5rem;
+}
+
+.hero-small{
+    font-size:2rem;
+}
+
+.tool-card{
+    width:100%;
+    max-width:360px;
+}
+
 }

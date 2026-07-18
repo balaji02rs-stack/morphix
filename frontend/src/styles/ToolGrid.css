@@ -1,0 +1,238 @@
+/* ===========================
+   Common Tool Pages
+=========================== */
+
+.tool-page {
+    max-width: 1300px;
+    margin: auto;
+    padding: 50px 20px 70px;
+    animation: fadeIn .8s ease;
+}
+
+/* ===========================
+   Page Header
+=========================== */
+
+.page-header {
+    text-align: center;
+    margin-bottom: 55px;
+}
+
+.page-header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 12px;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    color: #cbd5e1;
+}
+
+/* ===========================
+   Grid
+=========================== */
+
+.tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 30px;
+    justify-items: center;
+}
+
+/* ===========================
+   Cards
+=========================== */
+
+.tool-card {
+    width: 100%;
+    max-width: 340px;
+
+    background: rgba(31, 41, 55, .95);
+
+    border: 1px solid rgba(59,130,246,.18);
+
+    border-radius: 22px;
+
+    padding: 35px 28px;
+
+    text-decoration: none;
+
+    color: white;
+
+    text-align: center;
+
+    transition: .35s;
+
+    box-shadow: 0 12px 28px rgba(0,0,0,.28);
+}
+
+.tool-card:hover {
+
+    transform: translateY(-10px);
+
+    border-color: #3b82f6;
+
+    box-shadow: 0 20px 40px rgba(59,130,246,.25);
+
+}
+
+/* ===========================
+   Icon
+=========================== */
+
+.tool-icon{
+
+    width:90px;
+    height:90px;
+
+    margin:auto;
+
+    margin-bottom:22px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:rgba(59,130,246,.12);
+
+    color:#3b82f6;
+
+    font-size:40px;
+
+    transition:.35s;
+
+}
+
+.tool-card:hover .tool-icon{
+
+    transform:scale(1.12) rotate(-8deg);
+
+    background:rgba(59,130,246,.2);
+
+}
+
+/* ===========================
+   Text
+=========================== */
+
+.tool-card h2{
+
+    font-size:1.8rem;
+
+    margin-bottom:12px;
+
+}
+
+.card-line{
+
+    width:45px;
+
+    height:4px;
+
+    margin:auto;
+
+    border-radius:20px;
+
+    background:#3b82f6;
+
+    margin-bottom:18px;
+
+}
+
+.tool-card p{
+
+    color:#cbd5e1;
+
+    line-height:1.8;
+
+    min-height:75px;
+
+}
+
+/* ===========================
+   Button
+=========================== */
+
+.explore-btn{
+
+    display:inline-block;
+
+    margin-top:15px;
+
+    border:2px solid #2563eb;
+
+    color:#3b82f6;
+
+    padding:10px 22px;
+
+    border-radius:10px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.tool-card:hover .explore-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+/* ===========================
+   Animation
+=========================== */
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+
+transform:translateY(25px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+/* ===========================
+   Mobile
+=========================== */
+
+@media(max-width:768px){
+
+.page-header h1{
+
+font-size:2.3rem;
+
+}
+
+.tool-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.tool-card{
+
+max-width:360px;
+
+}
+
+}

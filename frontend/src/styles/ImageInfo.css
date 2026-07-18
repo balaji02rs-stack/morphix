@@ -1,0 +1,26 @@
+.image-info-card {
+    background: #1f2937;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.info-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.info-item span {
+    display: block;
+    font-size: 0.85rem;
+    color: #9ca3af;
+}
+
+.info-item strong {
+    color: white;
+}

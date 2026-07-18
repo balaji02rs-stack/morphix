@@ -1,0 +1,440 @@
+/* ==========================================================
+   MORPHIX - Developer Tools
+========================================================== */
+
+.developer-tool-page {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    animation: fadeIn .5s ease;
+}
+
+.developer-tool-card {
+    width: 100%;
+    max-width: 820px;
+    background: rgba(31, 41, 55, 0.96);
+    border: 1px solid rgba(59,130,246,.25);
+    border-radius: 22px;
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.35);
+}
+
+.developer-tool-card h1{
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    font-size:2.3rem;
+    margin-bottom:10px;
+}
+
+.tool-description{
+    text-align:center;
+    color:#cbd5e1;
+    font-size:1rem;
+    margin-bottom:35px;
+}
+
+/* ==========================================================
+   Output
+========================================================== */
+
+.output-box{
+    width:100%;
+    min-height:75px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#111827;
+
+    border:2px solid rgba(59,130,246,.25);
+
+    border-radius:14px;
+
+    padding:18px;
+
+    color:#60a5fa;
+
+    font-size:16px;
+
+    font-family:Consolas, monospace;
+
+    word-break:break-all;
+
+    transition:.3s;
+
+    margin:25px 0;
+}
+
+.output-box:hover{
+    border-color:#3b82f6;
+}
+
+/* ==========================================================
+   Buttons
+========================================================== */
+
+.button-group{
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+    margin-top:30px;
+}
+
+.primary-btn,
+.secondary-btn{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:10px;
+
+    min-width:200px;
+
+    padding:14px 24px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.25s;
+}
+
+.primary-btn{
+
+    background:#2563eb;
+
+    color:white;
+}
+
+.primary-btn:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+}
+
+.secondary-btn{
+
+    background:transparent;
+
+    color:white;
+
+    border:2px solid #2563eb;
+}
+
+.secondary-btn:hover{
+
+    background:#2563eb;
+}
+
+.primary-btn:disabled,
+.secondary-btn:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+}
+
+/* ==========================================================
+   Slider
+========================================================== */
+
+.setting-group{
+
+    margin-bottom:28px;
+}
+
+.setting-group label{
+
+    display:block;
+
+    color:white;
+
+    font-weight:600;
+
+    margin-bottom:15px;
+}
+
+.slider-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+}
+
+.slider-row input[type=range]{
+
+    flex:1;
+
+    cursor:pointer;
+}
+
+.slider-row span{
+
+    width:45px;
+
+    text-align:center;
+
+    color:#60a5fa;
+
+    font-weight:700;
+
+    font-size:18px;
+}
+
+/* ==========================================================
+   Checkboxes
+========================================================== */
+
+.checkbox-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:15px;
+
+    margin-bottom:30px;
+}
+
+.checkbox-grid label{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    color:#e5e7eb;
+
+    background:#111827;
+
+    border:1px solid rgba(59,130,246,.25);
+
+    border-radius:12px;
+
+    padding:15px;
+
+    transition:.25s;
+}
+
+.checkbox-grid label:hover{
+
+    border-color:#3b82f6;
+}
+
+.checkbox-grid input{
+
+    width:18px;
+
+    height:18px;
+
+    accent-color:#2563eb;
+}
+
+/* ==========================================================
+   Strength
+========================================================== */
+
+.strength-box{
+
+    margin-top:20px;
+
+    margin-bottom:25px;
+}
+
+.strength-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:white;
+
+    margin-bottom:10px;
+
+    font-weight:600;
+}
+
+.strength-bar{
+
+    height:10px;
+
+    background:#1f2937;
+
+    border-radius:50px;
+
+    overflow:hidden;
+}
+
+.strength-fill{
+
+    height:100%;
+
+    border-radius:50px;
+
+    transition:.35s;
+}
+
+/* ==========================================================
+   Inputs
+========================================================== */
+
+.tool-input,
+.tool-textarea{
+
+    width:100%;
+
+    background:#111827;
+
+    color:white;
+
+    border:2px solid rgba(59,130,246,.2);
+
+    border-radius:12px;
+
+    padding:16px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.3s;
+
+    margin-bottom:20px;
+}
+
+.tool-input:focus,
+.tool-textarea:focus{
+
+    border-color:#3b82f6;
+}
+
+.tool-textarea{
+
+    min-height:180px;
+
+    resize:vertical;
+}
+
+/* ==========================================================
+   Info Card
+========================================================== */
+
+.info-card{
+
+    margin-top:35px;
+
+    background:#111827;
+
+    border:1px solid rgba(59,130,246,.2);
+
+    border-radius:16px;
+
+    padding:25px;
+}
+
+.info-card h3{
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:15px;
+}
+
+.info-card ul{
+
+    margin:0;
+
+    padding-left:20px;
+
+    color:#cbd5e1;
+
+    line-height:1.8;
+}
+
+/* ==========================================================
+   Animation
+========================================================== */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+    }
+}
+
+/* ==========================================================
+   Mobile
+========================================================== */
+
+@media(max-width:768px){
+
+    .developer-tool-card{
+
+        padding:28px 22px;
+    }
+
+    .developer-tool-card h1{
+
+        font-size:1.8rem;
+    }
+
+    .checkbox-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .button-group{
+
+        flex-direction:column;
+    }
+
+    .primary-btn,
+    .secondary-btn{
+
+        width:100%;
+    }
+
+    .slider-row{
+
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .slider-row span{
+
+        width:100%;
+    }
+}

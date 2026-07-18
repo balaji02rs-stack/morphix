@@ -1,119 +1,337 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import api from "../services/api";
-import "../styles/ToolPage.css";
+
+import ImageToolLayout from "../layouts/ImageToolLayout";
+
+import ImageUpload from "../components/image/ImageUpload";
+import ImageWorkspace from "../components/image/ImageWorkspace";
+import ImageInfo from "../components/image/ImageInfo";
+import ImageActions from "../components/image/ImageActions";
+import AspectRatioSelector from "../components/image/AspectRatioSelector";
 
 function CropImage() {
-  const [file, setFile] = useState(null);
-  const [x, setX] = useState("");
-  const [y, setY] = useState("");
-  const [width, setWidth] = useState("");
-  const [height, setHeight] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const cropImage = async () => {
-    if (!file) {
-      alert("Please select an image.");
-      return;
-    }
+    const [selectedFile, setSelectedFile] = useState(null);
 
-    if (!x || !y || !width || !height) {
-      alert("Please enter all crop values.");
-      return;
-    }
+    const [imageUrl, setImageUrl] = useState(null);
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("x", x);
-    formData.append("y", y);
-    formData.append("width", width);
-    formData.append("height", height);
+    const [imageInfo, setImageInfo] = useState({
 
-    try {
-      setLoading(true);
+        name: "",
+        type: "",
+        size: 0,
+        width: 0,
+        height: 0
 
-      const response = await api.post("/image/crop", formData, {
-        responseType: "blob",
-      });
+    });
 
-      const url = window.URL.createObjectURL(response.data);
+    const [selection, setSelection] = useState({
 
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "cropped.png";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+        x: 0,
+        y: 0,
+        width: 250,
+        height: 250
 
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error(error);
-      alert("Crop failed.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    });
 
-  return (
-    <div className="tool-container">
-      <div className="tool-card">
-        <h1>Crop Image</h1>
+    const [cropData, setCropData] = useState({
 
-        <p>Crop an image using X, Y, Width and Height.</p>
+        x: 0,
+        y: 0,
+        width: 250,
+        height: 250
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
+    });
+
+    const [aspectRatio, setAspectRatio] = useState(null);
+
+    const [loading, setLoading] = useState(false);
+
+    const [downloadBlob, setDownloadBlob] = useState(null);
+
+    useEffect(() => {
+
+        if (!selectedFile) return;
+
+        const url = URL.createObjectURL(selectedFile);
+
+        setImageUrl(url);
+
+        const img = new Image();
+
+        img.onload = () => {
+
+            setImageInfo({
+
+                name: selectedFile.name,
+                type: selectedFile.type,
+                size: selectedFile.size,
+                width: img.width,
+                height: img.height
+
+            });
+
+            setSelection({
+
+                x: 0,
+                y: 0,
+                width: Math.min(300, img.width),
+                height: Math.min(300, img.height)
+
+            });
+
+            setCropData({
+
+                x: 0,
+                y: 0,
+                width: Math.min(300, img.width),
+                height: Math.min(300, img.height)
+
+            });
+
+        };
+
+        img.src = url;
+
+        return () => URL.revokeObjectURL(url);
+
+    }, [selectedFile]);
+
+    const handleWorkspaceSelection = ({ display, original }) => {
+
+        setSelection(display);
+
+        setCropData(original);
+
+    };
+        const handleReset = () => {
+
+        if (!imageInfo.width) return;
+
+        setSelection({
+
+            x: 0,
+            y: 0,
+            width: Math.min(300, imageInfo.width),
+            height: Math.min(300, imageInfo.height)
+
+        });
+
+        setCropData({
+
+            x: 0,
+            y: 0,
+            width: Math.min(300, imageInfo.width),
+            height: Math.min(300, imageInfo.height)
+
+        });
+
+        setAspectRatio(null);
+
+        setDownloadBlob(null);
+
+    };
+
+    const handleCrop = async () => {
+
+        if (!selectedFile) {
+
+            alert("Please upload an image.");
+
+            return;
+
+        }
+
+        try {
+
+            setLoading(true);
+
+            const formData = new FormData();
+
+            formData.append("file", selectedFile);
+
+            formData.append("x", cropData.x);
+
+            formData.append("y", cropData.y);
+
+            formData.append("width", cropData.width);
+
+            formData.append("height", cropData.height);
+
+            const response = await api.post(
+
+                "/image/crop",
+
+                formData,
+
+                {
+
+                    responseType: "blob"
+
+                }
+
+            );
+
+            const blob = new Blob([response.data]);
+
+            setDownloadBlob(blob);
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            alert("Crop failed.");
+
+        }
+
+        finally {
+
+            setLoading(false);
+
+        }
+
+    };
+
+    const handleDownload = () => {
+
+        if (!downloadBlob) return;
+
+        const url = URL.createObjectURL(downloadBlob);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+
+        link.download = "cropped-image.png";
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        URL.revokeObjectURL(url);
+
+    };
+        return (
+
+        <ImageToolLayout
+
+            title="Crop Image"
+
+            description="Crop your image by dragging the selection area."
+
+            upload={
+
+                <ImageUpload
+
+                    file={selectedFile}
+
+                    onFileSelect={setSelectedFile}
+
+                />
+
+            }
+
+            workspace={
+
+                <ImageWorkspace
+
+                    imageUrl={imageUrl}
+
+                    originalWidth={imageInfo.width}
+
+                    originalHeight={imageInfo.height}
+
+                    selection={selection}
+
+                    showOverlay
+
+                    aspectRatio={aspectRatio}
+
+                    lockAspectRatio={aspectRatio !== null}
+
+                    onSelectionChange={handleWorkspaceSelection}
+
+                />
+
+            }
+
+            info={
+
+                <ImageInfo
+
+                    fileName={imageInfo.name}
+
+                    fileType={imageInfo.type}
+
+                    fileSize={imageInfo.size}
+
+                    width={imageInfo.width}
+
+                    height={imageInfo.height}
+
+                />
+
+            }
+
+            controls={
+
+                <AspectRatioSelector
+
+                    value={aspectRatio}
+
+                    onChange={setAspectRatio}
+
+                />
+
+            }
+
+            actions={
+
+                <ImageActions
+
+                    primaryLabel={
+
+                        loading
+
+                            ? "Cropping..."
+
+                            : "Crop"
+
+                    }
+
+                    onPrimary={handleCrop}
+
+                    onReset={handleReset}
+
+                    onDownload={handleDownload}
+
+                    disablePrimary={
+
+                        loading ||
+
+                        !selectedFile
+
+                    }
+
+                    disableDownload={
+
+                        !downloadBlob
+
+                    }
+
+                />
+
+            }
+
         />
 
-        <br /><br />
+    );
 
-        <input
-          type="number"
-          placeholder="X"
-          value={x}
-          onChange={(e) => setX(e.target.value)}
-        />
-
-        <br /><br />
-
-        <input
-          type="number"
-          placeholder="Y"
-          value={y}
-          onChange={(e) => setY(e.target.value)}
-        />
-
-        <br /><br />
-
-        <input
-          type="number"
-          placeholder="Width"
-          value={width}
-          onChange={(e) => setWidth(e.target.value)}
-        />
-
-        <br /><br />
-
-        <input
-          type="number"
-          placeholder="Height"
-          value={height}
-          onChange={(e) => setHeight(e.target.value)}
-        />
-
-        <br /><br />
-
-        <button
-          className="tool-button"
-          onClick={cropImage}
-          disabled={loading}
-        >
-          {loading ? "Cropping..." : "Crop Image"}
-        </button>
-      </div>
-    </div>
-  );
 }
 
 export default CropImage;

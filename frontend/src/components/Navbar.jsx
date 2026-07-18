@@ -1,18 +1,37 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "../styles/Navbar.css";
+import logo from "../assets/logo.png";
 
 function Navbar() {
-  return (
-    <nav className="navbar">
-      <div className="logo">Morphix</div>
+    return (
+        <nav className="navbar">
 
-      <div className="nav-links">
-        <Link to="/">Home</Link>
-        <Link to="/developer-tools">Developer Tools</Link>
-        <Link to="/image-tools">Image Tools</Link>
-      </div>
-    </nav>
-  );
+            <NavLink to="/" className="logo">
+                <img
+                    src={logo}
+                    alt="Morphix"
+                    className="logo-image"
+                />
+            </NavLink>
+
+            <div className="nav-links">
+
+                <NavLink to="/">
+                    Home
+                </NavLink>
+
+                <NavLink to="/developer-tools">
+                    Developer Tools
+                </NavLink>
+
+                <NavLink to="/image-tools">
+                    Image Tools
+                </NavLink>
+
+            </div>
+
+        </nav>
+    );
 }
 
 export default Navbar;

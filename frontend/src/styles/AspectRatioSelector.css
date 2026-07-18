@@ -1,0 +1,77 @@
+.aspect-selector{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+.aspect-title{
+
+    color:#e2e8f0;
+
+    font-size:15px;
+
+    font-weight:600;
+
+}
+
+.aspect-options{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:12px;
+
+}
+
+.aspect-button{
+
+    border:1px solid #334155;
+
+    background:#1e293b;
+
+    color:#e2e8f0;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    font-weight:600;
+
+}
+
+.aspect-button:hover{
+
+    border-color:#3b82f6;
+
+    background:#2563eb22;
+
+}
+
+.aspect-button.active{
+
+    background:#2563eb;
+
+    color:white;
+
+    border-color:#2563eb;
+
+}
+
+@media(max-width:768px){
+
+.aspect-options{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}

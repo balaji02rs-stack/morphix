@@ -1,90 +1,202 @@
 import { useState } from "react";
+import {
+  FaFileImage,
+  FaUpload,
+  FaExchangeAlt,
+  FaTrash,
+  FaDownload
+} from "react-icons/fa";
+import { toast } from "react-toastify";
 import api from "../services/api";
-import "../styles/ToolPage.css";
+import "../styles/ImageTool.css";
 
 function PngToJpg() {
+
   const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const handleFile = (selectedFile) => {
+
+    if (!selectedFile) return;
+
+    setFile(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile));
+
+  };
+
   const convertImage = async () => {
+
     if (!file) {
-      alert("Please select a PNG image.");
+      toast.warning("Please select a PNG image.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     try {
+
       setLoading(true);
+
+      const formData = new FormData();
+      formData.append("file", file);
 
       const response = await api.post(
         "/image/png-to-jpg",
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data"
           },
-          responseType: "blob",
+          responseType: "blob"
         }
       );
 
-      const url = window.URL.createObjectURL(
-        new Blob([response.data])
-      );
+      const url = window.URL.createObjectURL(response.data);
 
       const link = document.createElement("a");
       link.href = url;
       link.download = "converted.jpg";
-
-      document.body.appendChild(link);
       link.click();
-      link.remove();
 
       window.URL.revokeObjectURL(url);
 
+      toast.success("Image converted successfully!");
+
     } catch (error) {
+
       console.error(error);
-      alert("Conversion failed.");
+
+      toast.error("Conversion failed.");
+
     } finally {
+
       setLoading(false);
+
     }
+
+  };
+
+  const clearAll = () => {
+
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+
+    setFile(null);
+    setPreview("");
+
+    toast.info("Cleared.");
+
   };
 
   return (
-    <div className="tool-container">
-      <div className="tool-card">
 
-        <h1>🖼 PNG → JPG Converter</h1>
+    <div className="image-tool-page">
 
-        <p>Upload a PNG image and convert it to JPG.</p>
+      <div className="image-tool-card">
 
-        <input
-          type="file"
-          accept=".png,image/png"
-          onChange={(e) => setFile(e.target.files[0])}
-        />
+        <h1>
+          <FaExchangeAlt />
+          PNG → JPG Converter
+        </h1>
 
-        {file && (
-          <p style={{ marginTop: "15px" }}>
-            Selected:
-            <br />
-            <strong>{file.name}</strong>
-          </p>
+        <p className="tool-description">
+          Convert PNG images into JPG format quickly and easily.
+        </p>
+
+        <label className="upload-box">
+
+          <FaUpload size={40} />
+
+          <h3>Click to Upload PNG Image</h3>
+
+          <p>Supports .png files</p>
+
+          <input
+            type="file"
+            accept=".png,image/png"
+            hidden
+            onChange={(e) => handleFile(e.target.files[0])}
+          />
+
+        </label>
+
+        {preview && (
+
+          <div className="preview-container">
+
+            <img
+              src={preview}
+              alt="Preview"
+              className="preview-image"
+            />
+
+            <div className="file-details">
+
+              <FaFileImage />
+
+              <span>{file.name}</span>
+
+            </div>
+
+          </div>
+
         )}
 
-        <button
-          className="tool-button"
-          onClick={convertImage}
-          disabled={loading}
-          style={{ marginTop: "20px" }}
-        >
-          {loading ? "Converting..." : "Convert to JPG"}
-        </button>
+        <div className="button-group">
+
+          <button
+            className="primary-btn"
+            onClick={convertImage}
+            disabled={loading}
+          >
+            <FaDownload />
+
+            {loading
+              ? "Converting..."
+              : "Convert Image"}
+
+          </button>
+
+          <button
+            className="secondary-btn"
+            onClick={clearAll}
+          >
+            <FaTrash />
+            Clear
+          </button>
+
+        </div>
+
+        <div className="info-card">
+
+          <h3>
+
+            <FaFileImage />
+
+            About PNG → JPG
+
+          </h3>
+
+          <ul>
+
+            <li>Converts PNG images into JPG format.</li>
+
+            <li>Perfect for reducing file compatibility issues.</li>
+
+            <li>Suitable for photos and web uploads.</li>
+
+            <li>Quick conversion with a simple workflow.</li>
+
+          </ul>
+
+        </div>
 
       </div>
+
     </div>
+
   );
+
 }
 
 export default PngToJpg;

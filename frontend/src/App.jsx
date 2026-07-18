@@ -4,6 +4,9 @@ import Navbar from "./components/Navbar";
 
 import Home from "./pages/Home";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import DeveloperTools from "./pages/DeveloperTools";
 import UUIDGenerator from "./pages/UUIDGenerator";
 import PasswordGenerator from "./pages/PasswordGenerator";
@@ -70,7 +73,13 @@ function App() {
 />
         <Route path="*" element={<h1 style={{ padding: "40px" }}>404 - Page Not Found</h1>} />
       </Routes>
+      <ToastContainer
+  position="top-right"
+  autoClose={2000}
+  theme="dark"
+/>
     </>
+    
   );
 }
 

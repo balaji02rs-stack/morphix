@@ -1,56 +1,82 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FaCopy, FaSyncAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 import api from "../services/api";
-import "../styles/ToolPage.css";
+import "../styles/DeveloperTool.css";
 
 function UUIDGenerator() {
   const [uuid, setUuid] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    generateUUID();
+  }, []);
 
   const generateUUID = async () => {
     try {
+      setLoading(true);
+
       const response = await api.get("/dev/uuid");
+
       setUuid(response.data);
     } catch (error) {
       console.error(error);
-      alert("Backend is not running.");
+      toast.error("Backend is not running.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const copyUUID = () => {
-    if (!uuid) return;
-
-    navigator.clipboard.writeText(uuid);
-    alert("UUID copied successfully!");
+  const copyUUID = async () => {
+    try {
+      await navigator.clipboard.writeText(uuid);
+      toast.success("UUID copied!");
+    } catch {
+      toast.error("Failed to copy.");
+    }
   };
 
- return (
-  <div className="tool-container">
-    <div className="tool-card">
-      <h1>UUID Generator</h1>
+  return (
+    <div className="developer-tool-page">
 
-      <p>Generate universally unique identifiers instantly.</p>
+      <div className="developer-tool-card">
 
-      <button className="tool-button" onClick={generateUUID}>
-        Generate UUID
-      </button>
+        <h1>UUID Generator</h1>
 
-      {uuid && (
-        <>
-          <textarea
-            className="tool-output"
-            readOnly
-            value={uuid}
-          />
+        <p className="tool-description">
+          Generate RFC 4122 universally unique identifiers instantly.
+        </p>
+
+        <div className="output-box">
+          {loading ? "Generating..." : uuid}
+        </div>
+
+        <div className="button-group">
 
           <button
-            className="tool-button copy-btn"
-            onClick={copyUUID}
+            className="primary-btn"
+            onClick={generateUUID}
+            disabled={loading}
           >
-            Copy UUID
+            <FaSyncAlt />
+            {loading ? " Generating..." : " Generate New"}
           </button>
-        </>
-      )}
+
+          <button
+            className="secondary-btn"
+            onClick={copyUUID}
+            disabled={!uuid}
+          >
+            <FaCopy />
+            Copy
+          </button>
+
+        </div>
+
+      </div>
+
     </div>
-  </div>
-)
+  );
 }
+
 export default UUIDGenerator;
