@@ -24,17 +24,15 @@ function ImageTools() {
   link: "/image-tools/compress",
 },
     {
-      title: "Crop Image",
-      description: "Coming Soon",
-      link: "#",
-      disabled: true,
-    },
+  title: "Crop Image",
+  description: "Crop unwanted areas from images.",
+  link: "/image-tools/crop",
+},
     {
-      title: "Rotate Image",
-      description: "Coming Soon",
-      link: "#",
-      disabled: true,
-    },
+  title: "Rotate Image",
+  description: "Rotate images by 90°, 180°, or 270°.",
+  link: "/image-tools/rotate",
+},
   ];
 
   return (

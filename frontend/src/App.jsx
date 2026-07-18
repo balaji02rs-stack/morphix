@@ -16,6 +16,8 @@ import JpgToPng from "./pages/JpgToPng";
 import PngToJpg from "./pages/PngToJpg";
 import ResizeImage from "./pages/ResizeImage";
 import CompressImage from "./pages/CompressImage";
+import CropImage from "./pages/CropImage";
+import RotateImage from "./pages/RotateImage";
 
 function App() {
   return (
@@ -36,6 +38,12 @@ function App() {
         <Route path="/image-tools/jpg-to-png" element={<JpgToPng />} />
         <Route path="/image-tools/png-to-jpg" element={<PngToJpg />} />
         <Route path="/image-tools/resize" element={<ResizeImage />} />
+        <Route path="/image-tools/crop" element={<CropImage />} />
+        <Route
+    path="/image-tools/rotate"
+    element={<RotateImage />}
+/>
+        
 <Route
   path="/image-tools/compress"
   element={<CompressImage />}
