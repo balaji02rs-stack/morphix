@@ -1,49 +1,48 @@
 import { Link } from "react-router-dom";
-import "../styles/Home.css";
+import "../styles/DeveloperTools.css";
 
 function Home() {
+  const sections = [
+    {
+      title: "Developer Tools",
+      description:
+        "Useful utilities for developers including UUID, Password Generator, SHA-256, Base64 and JSON Formatter.",
+      link: "/developer-tools",
+    },
+    {
+      title: "Image Tools",
+      description:
+        "Convert, resize, compress, crop and rotate images with ease.",
+      link: "/image-tools",
+    },
+    {
+      title: "Document Tools",
+      description:
+        "Merge, split, protect and unlock PDF documents.",
+      link: "/document-tools",
+    },
+  ];
+
   return (
-    <div className="home">
-      <section className="hero">
-        <h1>Morphix</h1>
+    <div className="developer-page">
+      <h1>Welcome to Morphix</h1>
 
-        <p>
-          Your all-in-one online toolkit for developers, image processing,
-          and document utilities.
-        </p>
-      </section>
+      <p className="subtitle">
+        Your all-in-one toolkit for Developer, Image and Document utilities.
+      </p>
 
-      <section className="categories">
-        <Link to="/developer-tools" className="category-card">
-          <h2>🛠 Developer Tools</h2>
-
-          <p>
-            UUID Generator, Password Generator, SHA-256,
-            Base64 Encoder/Decoder, JSON Formatter.
-          </p>
-        </Link>
-
-        <Link to="/image-tools" className="category-card">
-          <h2>🖼 Image Tools</h2>
-
-          <p>
-            JPG → PNG, PNG → JPG, Resize Image,
-            Compress Image, Crop Image, Rotate Image.
-          </p>
-        </Link>
-
-        <div className="category-card disabled">
-          <h2>📄 Document Tools</h2>
-
-          <p>
-            Merge PDF, Split PDF,
-            Protect PDF, Unlock PDF,
-            Extract PDF Text.
-          </p>
-
-          <span>Coming Soon</span>
-        </div>
-      </section>
+      <div className="tool-grid">
+        {sections.map((section, index) => (
+          <Link
+            key={index}
+            to={section.link}
+            className="tool-card"
+          >
+            <h2>{section.title}</h2>
+            <p>{section.description}</p>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

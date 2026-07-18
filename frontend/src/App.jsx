@@ -19,6 +19,12 @@ import CompressImage from "./pages/CompressImage";
 import CropImage from "./pages/CropImage";
 import RotateImage from "./pages/RotateImage";
 
+import DocumentTools from "./pages/DocumentTools";
+import MergePdf from "./pages/MergePdf";
+import SplitPdf from "./pages/SplitPdf";
+import ProtectPdf from "./pages/ProtectPdf";
+import UnlockPdf from "./pages/UnlockPdf";
+
 function App() {
   return (
     <>
@@ -39,6 +45,20 @@ function App() {
         <Route path="/image-tools/png-to-jpg" element={<PngToJpg />} />
         <Route path="/image-tools/resize" element={<ResizeImage />} />
         <Route path="/image-tools/crop" element={<CropImage />} />
+        <Route path="/document-tools" element={<DocumentTools />} />
+<Route path="/document-tools/merge" element={<MergePdf />} />
+<Route
+    path="/document-tools/unlock"
+    element={<UnlockPdf />}
+/>
+<Route
+    path="/document-tools/protect"
+    element={<ProtectPdf />}
+/>
+<Route
+    path="/document-tools/split"
+    element={<SplitPdf />}
+/>
         <Route
     path="/image-tools/rotate"
     element={<RotateImage />}
